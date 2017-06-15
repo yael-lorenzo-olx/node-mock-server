@@ -1,16 +1,16 @@
 {
-	"desc": "Returns details of a single product.",
+	"desc": "Returns a standard reponse of Hosted Checkout from Ingenico Collect",
 	"security": [],
 	"protected": false,
 	"status": "open",
 	"request": {
-		"uri": {
+		"query": {
 			"parameters": [
 				{
-					"name": "productCode",
-					"required": true,
+					"name": "query",
+					"required": false,
 					"type": "string",
-					"desc": "Product identifier"
+					"desc": "Search query"
 				}
 			]
 		}
