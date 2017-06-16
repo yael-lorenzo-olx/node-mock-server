@@ -2,7 +2,7 @@
 var mockServer = require('./../mock-server.js');
 var dest = __dirname + '/rest';
 var replacePathsStr = '/v2/{baseSiteId}';
-var responseFuncPath = __dirname + '/func-imported';
+var responseFuncPath = __dirname + 'func-imported';
 
 // http://petstore.swagger.io/v2/swagger.json
 // http://localhost:3001/src/swagger/swagger-demo-docs.json
