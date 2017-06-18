@@ -32,7 +32,7 @@ function runServer(options) {
 	var CollectionController = require('./lib/controller/CollectionController');
 	var FileOpenController = require('./lib/controller/FileOpenController');
 
-	var MockController = require('./lib/controller/MockController');
+	var MockController = require('./lib/controller/MockController2');
 
 	return {
 		appController: appController,
