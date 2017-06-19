@@ -3,6 +3,7 @@ var mockServer = require('./../mock-server.js');
 var dest = __dirname + '/rest';
 var replacePathsStr = '/v2/{baseSiteId}';
 var responseFuncPath = __dirname + 'func-imported';
+var log = require('chip')();
 
 // http://petstore.swagger.io/v2/swagger.json
 // http://localhost:3001/src/swagger/swagger-demo-docs.json
@@ -19,10 +20,12 @@ mockServer({
 		'Global-Custom-Header': 'Global-Custom-Header',
 	},
 	customDTOToClassTemplate: __dirname + '/templates/dto_es6flow.ejs',
-	middleware: {
+		middleware: {
 		'/rest/products/#{productCode}/GET'(serverOptions, requestOptions) {
-			var productCode = requestOptions.req.params[0].split('/')[3];
-
+			var productCode = requestOptions.req.params[0].split('/')[1];
+			log.info('Yael: middleware run.');
+            log.info('\trequestOptions.req.params[0] = ' + requestOptions.req.params[0]);
+            log.info('\tproductCode = ' + productCode);
 			if (productCode === '1234') {
 				requestOptions.res.statusCode = 201;
 				requestOptions.res.end('product 1234');
@@ -30,6 +33,20 @@ mockServer({
 			}
 
 			return 'success';
+		},
+		'/rest/#{p}/#{productCode}/GET'(serverOptions, requestOptions) {
+            log.info('Yael: middleware run.');
+            log.info('\trequestOptions.req.params[0] = ' + requestOptions.req.params[0]);
+            var productCode = requestOptions.req.params[0].split('/')[1];
+            log.info('\tproductCode = ' + productCode);
+
+            if (productCode === '1234') {
+                requestOptions.res.statusCode = 204;
+                requestOptions.res.end('product 1234');
+                return null;
+            }
+
+            return 'success';
 		}
 	},
 	swaggerImport: {
