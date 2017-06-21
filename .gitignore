@@ -2,7 +2,6 @@
 yarn.lock
 node_modules
 /preferences.json
-/demo/rest/*/*/*/mock/response.txt
 /test/tmp
 /test/func-imported
 /tmp
