@@ -3,6 +3,7 @@ var mockServer = require('./../mock-server.js');
 var dest = __dirname + '/rest';
 var replacePathsStr = '/v2/{baseSiteId}';
 var responseFuncPath = __dirname + '/func-imported';
+let fs = require('fs');
 
 // http://petstore.swagger.io/v2/swagger.json
 // http://localhost:3001/src/swagger/swagger-demo-docs.json
@@ -19,21 +20,25 @@ mockServer({
 		'Global-Custom-Header': 'Global-Custom-Header',
 	},
 	customDTOToClassTemplate: __dirname + '/templates/dto_es6flow.ejs',
-	middleware: {
-		'/rest/products/#{productCode}/GET'(serverOptions, requestOptions) {
+    middleware: {
+        '/rest/#{apiVersion}/#{merchantId}#hostedcheckouts/POST'(serverOptions, requestOptions) {
+            let filepath = __dirname + '/rest/#{apiVersion}/#{merchantId}#hostedcheckouts/POST/mock/middleware.json';
 
-            var urlLen = serverOptions.urlPath.split('/').length;
-			var productCode = requestOptions.req.params[0].split('/')[urlLen];
+            let endpointConfig = JSON.parse(fs.readFileSync(filepath, 'utf8'));
+            requestOptions.res.statusCode = endpointConfig.response.status;
 
-			if (productCode === '1234') {
-				requestOptions.res.statusCode = 201;
-				requestOptions.res.end('product 1234');
-				return null;
-			}
+            return 'success';
+        },
+        '/rest/#{apiVersion}/#{merchantId}#payments#{paymentId}#refund/POST'(serverOptions, requestOptions) {
+            let filepath = __dirname +
+				'/rest/#{apiVersion}/#{merchantId}#payments#{paymentId}#refund/POST/mock/middleware.json';
 
-			return 'success';
-		}
-	},
+            let endpointConfig = JSON.parse(fs.readFileSync(filepath, 'utf8'));
+            requestOptions.res.statusCode = endpointConfig.response.status;
+
+            return 'success';
+        }
+    },
 	swaggerImport: {
 		protocol: 'http',
 		authUser: undefined,
