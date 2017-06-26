@@ -37,7 +37,17 @@ mockServer({
             requestOptions.res.statusCode = endpointConfig.response.status;
 
             return 'success';
-        }
+        },
+		'/rest/#{apiVersion}/#{merchantId}#hostedcheckouts#{checkoutId}/GET'(serverOptions, requestOptions) {
+            let filepath = __dirname +
+                '/rest/#{apiVersion}/#{merchantId}#hostedcheckouts#{checkoutId}/GET/mock/success.json';
+
+			let responseTemplate = JSON.parse(fs.readFileSync(filepath));
+			responseTemplate.createdPaymentOutput.payment.id = '0000' + Date.now().toString() + Date.now().toString();
+
+			requestOptions.res.header('Content-Type', 'json');
+            requestOptions.res.end(JSON.stringify(responseTemplate));
+		}
     },
 	swaggerImport: {
 		protocol: 'http',
